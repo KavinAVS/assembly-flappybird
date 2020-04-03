@@ -8,6 +8,9 @@
     	birdbeak: .word 0xff9900 
     	birdeyes: .word 0xffffff
     	
+    	white: .word 0xffffff
+    	black: .word 0x000000
+    	
     	pipePos: .word 31
     	pipeWidth: .word 1
     	pipeHeight: .word 15
