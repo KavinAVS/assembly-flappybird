@@ -17,6 +17,8 @@
     	gravity: .word 0
     	
     	fKey: .word 102
+    	
+    	endColour: .word 0xf7f307
 
     	
 .text
@@ -27,6 +29,9 @@
 	
 	# ===== GAME LOOP =====
 	gameLoop:
+	
+	j endGame
+	
 	
 	li $v0, 32 #sleep call
     	li $a0, 50 #sleep for 17 milliseconds
@@ -75,7 +80,7 @@
 	Pressed: #if f key is pressed moves the bird up 1 and sets gravity to 0
 	lw $t0, birdRow
 	li $t1, 0
-	subi $t0, $t0, 4
+	subi $t0, $t0, 3
 	sw $t1, gravity
 	sw $t0, birdRow
 	j afterKey
@@ -84,8 +89,7 @@
 	lw $t0, birdRow
 	lw $t1, gravity
 	addi $t1, $t1, 1
-	srl $t2, $t1, 1
-	add $t0, $t0, $t2
+	add $t0, $t0, $t1
 	sw $t1, gravity
 	sw $t0, birdRow
 	
@@ -132,6 +136,11 @@
         sw $t1 256($a0) 
         sw $t1 260($a0)
         sw $t1 264($a0)
+        
+        
+        
+        
+        
 	
 	j return
 	
@@ -222,6 +231,7 @@
 	li $v0, 42
 	li $a1, 21 
 	syscall
+	
 	addi $a0, $a0, 1
 	sw $a0, pipeHeight
 	
@@ -245,7 +255,141 @@
 	return:
 	jr $ra	
 	
-							
+endGame:
+	lw $t0, displayAdStart
+	lw $t1, endColour
+	
+	addi $t0, $t0, 640 #row 5
+    
+    	#U
+    	sw $t1 8($t0) 
+        sw $t1 20($t0)
+        
+        #S
+        sw $t1 28($t0) 
+        sw $t1 32($t0)
+        sw $t1 36($t0) 
+        sw $t1 40($t0)
+        
+        #U
+	sw $t1 48($t0) 
+        sw $t1 60($t0) 
+	
+	#C
+        sw $t1 68($t0)
+        sw $t1 72($t0)
+        sw $t1 76($t0)
+        sw $t1 80($t0)
+
+	#K
+        sw $t1 88($t0)
+        sw $t1 96($t0)
+   
+        addi $t0, $t0, 128 #row 6
+        
+        #U
+    	sw $t1 8($t0) 
+        sw $t1 20($t0)
+        
+        #S
+        sw $t1 28($t0) 
+        
+        
+        #U
+	sw $t1 48($t0) 
+        sw $t1 60($t0) 
+	
+	#C
+        sw $t1 68($t0)
+        
+
+	#K
+        sw $t1 88($t0)
+        sw $t1 92($t0)
+        
+        addi $t0, $t0, 128 #row 7
+        
+        #U
+    	sw $t1 8($t0) 
+        sw $t1 20($t0)
+        
+       #S
+        sw $t1 28($t0) 
+        sw $t1 32($t0)
+        sw $t1 36($t0) 
+        sw $t1 40($t0)
+        
+        
+        #U
+	sw $t1 48($t0) 
+        sw $t1 60($t0) 
+	
+	#C
+        sw $t1 68($t0)
+        
+
+	#K
+        sw $t1 88($t0)
+
+        
+        addi $t0, $t0, 128 #row 8
+        
+        #U
+    	sw $t1 8($t0) 
+        sw $t1 20($t0)
+        
+       #S
+
+        sw $t1 40($t0)
+        
+        
+        #U
+	sw $t1 48($t0) 
+        sw $t1 60($t0) 
+	
+	#C
+        sw $t1 68($t0)
+        
+
+	#K
+        sw $t1 88($t0)
+        sw $t1 92($t0)
+       
+       	addi $t0, $t0, 128 #row 9
+        
+        #U
+    	sw $t1 8($t0) 
+    	sw $t1 12($t0) 
+    	sw $t1 16($t0) 
+        sw $t1 20($t0)
+        
+        #S
+        sw $t1 28($t0) 
+        sw $t1 32($t0)
+        sw $t1 36($t0) 
+        sw $t1 40($t0)
+        
+        
+        #U
+	sw $t1 48($t0) 
+	sw $t1 52($t0)
+	sw $t1 56($t0)
+        sw $t1 60($t0) 
+	
+	#C
+        sw $t1 68($t0)
+        sw $t1 72($t0)
+        sw $t1 76($t0)
+        sw $t1 80($t0)
+        
+
+	#K
+        sw $t1 88($t0)
+        sw $t1 96($t0)
+   
+      
+        j Exit
+																						
 Exit:
 	li $v0, 10 # terminate the program gracefully
 	syscall
