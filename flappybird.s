@@ -5,7 +5,7 @@
 #
 # Group members:
 # - Student 1: Kavin Adithiya Vinayagapuram Shivakumar, 1005595492
-# - Student 2 (if any): Name, Student Number
+# - Student 2: Spyridon Balageorge, 1004901751
 #
 # Bitmap Display Configuration:
 # - Unit width in pixels: 8					     
@@ -33,6 +33,7 @@
 
 	pipeColour: .word 0x7F3F3F
 	displayAdStart: .word 0x10008000
+	messageColour: 0xfc1936
 	
 	birdbody: .word 0x46057a 
     	birdbeak: .word 0xff9900 
@@ -48,6 +49,7 @@
     	birdRow: .word 5
     	birdCol: .word 1
     	gravity: .word 0
+    	
     	
     	fKey: .word 102
     	
@@ -76,6 +78,7 @@ gameLoop:
 	lw $a1, birdCol
 	jal drawBird
 	
+	jal drawNice
 	j gameLoop
 	
 	# =====  SKY BUILDING =====
@@ -321,24 +324,402 @@ drawBackground:
 	addi $sp, $sp, -4
 	sw $ra, 0($sp)
 	
-	li $a0, 0
-	li $a1, 0
-	lw $a2, pipeColour
-	jal drawPixel
-	
-	li $a0, 1
-	li $a1, 2
-	lw $a2, pipeColour
-	jal drawPixel
-	
-	
-	
 	lw $ra, 0($sp)
 	addi $sp, $sp, 4
 	
 	j return
 		
+drawWow:
+	addi $sp, $sp, -4
+    	sw $ra, 0($sp)
+	
+	#W
+	li $a0, 5 #row
+	li $a1, 5 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 6 #row
+	li $a1, 6 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 7 #row
+	li $a1, 7 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 6 #row
+	li $a1, 8 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 5 #row
+	li $a1, 9 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 6 #row
+	li $a1, 10 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 7 #row
+	li $a1, 11 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 6 #row
+	li $a1, 12 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 5 #row
+	li $a1, 13 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	#O
+	#upper O
+	li $a0, 5 #row
+	li $a1, 15 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 5 #row
+	li $a1, 16 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 5 #row
+	li $a1, 17 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 5 #row
+	li $a1, 18 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	
+	#Bottom O
+	li $a0, 8 #row
+	li $a1, 15 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 8 #row
+	li $a1, 16 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 8 #row
+	li $a1, 17 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 8 #row
+	li $a1, 18 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	#Left O
+	li $a0, 6 #row
+	li $a1, 15 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 7 #row
+	li $a1, 15 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	
+	#Right 0
+	li $a0, 6 #row
+	li $a1, 18 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 7 #row
+	li $a1, 18 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	#W
+	li $a0, 5 #row
+	li $a1, 20 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 6 #row
+	li $a1, 21 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 7 #row
+	li $a1, 22 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 6 #row
+	li $a1, 23 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 5 #row
+	li $a1, 24 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 6 #row
+	li $a1, 25 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 7 #row
+	li $a1, 26 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 6 #row
+	li $a1, 27 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 5 #row
+	li $a1, 28 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
 
+
+	lw $ra, 0($sp)
+    	addi $sp, $sp, 4
+	j return
+	
+	
+drawNice:
+	addi $sp, $sp, -4
+    	sw $ra, 0($sp)
+	
+	#N
+	
+	#left
+	li $a0, 5 #row
+	li $a1, 5 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 6 #row
+	li $a1, 5 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 7 #row
+	li $a1, 5 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 8 #row
+	li $a1, 5 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	#right
+	li $a0, 5 #row
+	li $a1, 9 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 6 #row
+	li $a1, 9 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 7 #row
+	li $a1, 9 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 8 #row
+	li $a1, 9 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	
+	li $a0, 5 #row
+	li $a1, 6 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 6 #row
+	li $a1, 7 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 7 #row
+	li $a1, 8 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	#I
+	
+	li $a0, 5 #row
+	li $a1, 11 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 6 #row
+	li $a1, 11 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 7 #row
+	li $a1, 11 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 8 #row
+	li $a1, 11 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	#C
+	li $a0, 5 #row
+	li $a1, 13 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 6 #row
+	li $a1, 13 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 7 #row
+	li $a1, 13 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 8 #row
+	li $a1, 13 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 5 #row
+	li $a1, 14 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 5 #row
+	li $a1, 15 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 8 #row
+	li $a1, 14 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 8 #row
+	li $a1, 15 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	#E
+	
+	li $a0, 5 #row
+	li $a1, 17 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 5 #row
+	li $a1, 18 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 5 #row
+	li $a1, 19 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 6 #row
+	li $a1, 17 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 7 #row
+	li $a1, 17 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 7 #row
+	li $a1, 18 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 7 #row
+	li $a1, 19 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 7 #row
+	li $a1, 19 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 8 #row
+	li $a1, 17 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 9 #row
+	li $a1, 17 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 9 #row
+	li $a1, 18 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 9 #row
+	li $a1, 19 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	lw $ra, 0($sp)
+   	addi $sp, $sp, 4
+	j return
+	
 	
 endGame:
 	lw $t0, displayAdStart
