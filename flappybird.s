@@ -20,14 +20,16 @@
 
     	
 .text
-
+	
+	li $v0, 32 #sleep call
+    	li $a0, 2000 #sleep for 17 milliseconds
+    	syscall
+	
 	# ===== GAME LOOP =====
 	gameLoop:
 	
 	li $v0, 32 #sleep call
-
     	li $a0, 50 #sleep for 17 milliseconds
-
     	syscall
 	
 	jal drawSky
@@ -99,7 +101,27 @@
 	lw $t1, birdbody
     	lw $t2, birdbeak
     	lw $t3, birdeyes
-
+	lw $t4, pipeColour
+	
+	lw $t5, 4($a0)
+	beq $t4, $t5, Exit
+	lw $t5, 8($a0)
+	beq $t4, $t5, Exit
+	
+	lw $t5, 132($a0)
+	beq $t4, $t5, Exit
+	lw $t5, 136($a0)
+	beq $t4, $t5, Exit
+	lw $t5, 140($a0)
+	beq $t4, $t5, Exit
+	
+	lw $t5, 256($a0)
+	beq $t4, $t5, Exit
+	lw $t5, 260($a0)
+	beq $t4, $t5, Exit
+	lw $t5, 264($a0)
+	beq $t4, $t5, Exit
+	
     	sw $t1 4($a0) 
         sw $t3 8($a0)
 
@@ -169,7 +191,7 @@
 	updatePipe:
 	lw $a0, pipePos
 	lw $a1, pipeHeight
-	li $a2, 7 
+	li $a2, 9 
 	lw $a3, pipeWidth
 	
 	addi $sp, $sp, -4
@@ -198,7 +220,7 @@
 	sw $t0, pipePos
 	
 	li $v0, 42
-	li $a1, 23 
+	li $a1, 21 
 	syscall
 	addi $a0, $a0, 1
 	sw $a0, pipeHeight
