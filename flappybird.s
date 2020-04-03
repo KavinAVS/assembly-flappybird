@@ -8,19 +8,22 @@
     	birdbeak: .word 0xff9900 
     	birdeyes: .word 0xffffff
     	
+    	pipePos: .word 31
+    	
 .text
 	# ===== GAME LOOP =====
 	gameLoop:
 	
 	li $v0, 32 #sleep call
-    	li $a0, 100 #sleep for 17 milliseconds
+    	li $a0, 17 #sleep for 17 milliseconds
     	syscall
 	
 	jal drawSky
 	
-	li $a0, 0
+	li $a0, 20
 	li $a1, 15
 	li $a2, 10
+	li $a3, 5
 	jal drawPipe
 	
 	li $a0, 16
@@ -78,6 +81,7 @@
 	# $a0: location (col) 0 to 31
 	# $a1: end of the top pipe (row) 0 to 31
 	# $a2: the gap size 
+	# $a3: pipe width 1 to 4
 	drawPipe:
 	lw $t0,displayAdStart
 	lw $t3,pipeColour
@@ -89,10 +93,15 @@
 	add $t2, $t0, $t2 #left bottom of top pipe
 	
 	dplooptop:
-	sw $t3, 0($t0) #set color
-	sw $t3, 4($t0)
-	sw $t3, 8($t0)
-	sw $t3, 12($t0)
+	move $t5, $t0
+	li $t4, 0
+	
+	dplooptop2:
+	sw $t3, 0($t5) #set color
+	addi $t5, $t5, 4
+	addi $t4, $t4, 1
+	bne $a3, $t4, dplooptop2
+	
 	addi $t0, $t0, 128 
 	bne $t2, $t0, dplooptop
 	
@@ -106,14 +115,37 @@
 	add $t5, $t1, $t5 #bottom left of bottom pipe
 	
 	dploopbottom:
-	sw $t3, 0($t4) #set color
-	sw $t3, 4($t4)
-	sw $t3, 8($t4)
-	sw $t3, 12($t4)
+	move $t6, $t4
+	li $t7, 0
+	
+	dploopbottom2:
+	sw $t3, 0($t6) #set color
+	addi $t6, $t6, 4
+	addi $t7, $t7, 1
+	bne $a3, $t7, dploopbottom2
+	
 	addi $t4, $t4, 128 
 	bne $t4, $t5, dploopbottom
 	
 	j return
+	
+	# ===== UPDATE PIPE =====
+	updatePipe:
+	lw $t0, pipePos
+	
+	width1check:
+	bne $t0, 31, width2check
+	
+	j makepipe
+	width2check:
+	bne $t0, 30, width3check
+	
+	j makepipe
+	width3check:
+	bne $t0, 29, makepipe
+	
+	j makepipe
+	makepipe:
 	
 	# ===== RETURN =====
 	return:
