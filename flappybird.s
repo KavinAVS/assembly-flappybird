@@ -10,8 +10,10 @@
     	
     	pipePos: .word 31
     	pipeWidth: .word 1
+    	pipeHeight: .word 15
     	
 .text
+
 	# ===== GAME LOOP =====
 	gameLoop:
 	
@@ -130,7 +132,7 @@
 	updatePipe:
 	lw $a0, pipePos
 	li $a1, 15
-	li $a2, 5 
+	li $a2, 10 
 	lw $a3, pipeWidth
 	
 	addi $sp, $sp, -4
@@ -170,7 +172,7 @@
 	
 	upend: #If WIDTH = 4
 	addi $t0, $t0, -1
-	sw $t0, pipePos	
+	sw $t0, pipePos
 	j return
 	
 	# ===== RETURN =====
