@@ -9,22 +9,19 @@
     	birdeyes: .word 0xffffff
     	
     	pipePos: .word 31
+    	pipeWidth: .word 1
     	
 .text
 	# ===== GAME LOOP =====
 	gameLoop:
 	
 	li $v0, 32 #sleep call
-    	li $a0, 17 #sleep for 17 milliseconds
+    	li $a0, 500 #sleep for 17 milliseconds
     	syscall
 	
 	jal drawSky
 	
-	li $a0, 20
-	li $a1, 15
-	li $a2, 10
-	li $a3, 5
-	jal drawPipe
+	jal updatePipe
 	
 	li $a0, 16
 	li $a1, 32
@@ -80,7 +77,7 @@
 	# ===== PIPE BUILDING =====
 	# $a0: location (col) 0 to 31
 	# $a1: end of the top pipe (row) 0 to 31
-	# $a2: the gap size 
+	# $a2: the gap size (not larger than 30) 
 	# $a3: pipe width 1 to 4
 	drawPipe:
 	lw $t0,displayAdStart
@@ -131,21 +128,50 @@
 	
 	# ===== UPDATE PIPE =====
 	updatePipe:
+	lw $a0, pipePos
+	li $a1, 15
+	li $a2, 5 
+	lw $a3, pipeWidth
+	
+	addi $sp, $sp, -4
+	sw $ra, 0($sp)
+	
+	jal drawPipe
+	
+	lw $ra, 0($sp)
+	addi $sp, $sp, 4
+	
+	
 	lw $t0, pipePos
+	lw $t1, pipeWidth
 	
-	width1check:
-	bne $t0, 31, width2check
+	beq $t0, 0, changepipewidth
+	j changepipewidth2
 	
-	j makepipe
-	width2check:
-	bne $t0, 30, width3check
+	changepipewidth: #If pipe POS = 0
+	beq $t1, 1, startnewpipe 
+	addi $t1, $t1, -1
+	sw $t1, pipeWidth
+	j return
 	
-	j makepipe
-	width3check:
-	bne $t0, 29, makepipe
+	startnewpipe: # If pipe WIDTH = 1 AND POS = 0
+	li $t0, 31
+	sw $t0, pipePos
+	j return
 	
-	j makepipe
-	makepipe:
+	changepipewidth2: 
+	beq $t1, 4, upend
+	#WIDTH != 4
+	addi $t0, $t0, -1 
+	addi $t1, $t1, 1
+	sw $t0, pipePos
+	sw $t1, pipeWidth
+	j return
+	
+	upend: #If WIDTH = 4
+	addi $t0, $t0, -1
+	sw $t0, pipePos	
+	j return
 	
 	# ===== RETURN =====
 	return:
