@@ -78,7 +78,7 @@ gameLoop:
 	lw $a1, birdCol
 	jal drawBird
 	
-	jal drawNice
+	jal drawCool
 	j gameLoop
 	
 	# =====  SKY BUILDING =====
@@ -718,6 +718,241 @@ drawNice:
 	
 	lw $ra, 0($sp)
    	addi $sp, $sp, 4
+	j return
+	
+	
+drawCool:
+	addi $sp, $sp, -4
+    	sw $ra, 0($sp)
+	
+	#C
+	li $a0, 5 #row
+	li $a1, 5 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 6 #row
+	li $a1, 5 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 7 #row
+	li $a1, 5 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 8 #row
+	li $a1, 5 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 5 #row
+	li $a1, 6 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 5 #row
+	li $a1, 7 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 8 #row
+	li $a1, 6 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 8 #row
+	li $a1, 7 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	#O
+	#upper O
+	li $a0, 5 #row
+	li $a1, 9 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 5 #row
+	li $a1, 10 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 5 #row
+	li $a1, 11 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 5 #row
+	li $a1, 12 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	
+	#Bottom O
+	li $a0, 8 #row
+	li $a1, 9 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 8 #row
+	li $a1, 10 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 8 #row
+	li $a1, 11 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 8 #row
+	li $a1, 12 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	#Left O
+	li $a0, 6 #row
+	li $a1, 9 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 7 #row
+	li $a1, 9 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	
+	#Right 0
+	li $a0, 6 #row
+	li $a1, 12 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 7 #row
+	li $a1, 12 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	#O - 2
+	#upper O
+	li $a0, 5 #row
+	li $a1, 14 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 5 #row
+	li $a1, 15 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 5 #row
+	li $a1, 16 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 5 #row
+	li $a1, 17 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	
+	#Bottom O
+	li $a0, 8 #row
+	li $a1, 14 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 8 #row
+	li $a1, 15 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 8 #row
+	li $a1, 16 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	li $a0, 8 #row
+	li $a1, 17 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	#Left O
+	li $a0, 6 #row
+	li $a1, 14 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 7 #row
+	li $a1, 14 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	
+	
+	#Right 0
+	li $a0, 6 #row
+	li $a1, 17 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 7 #row
+	li $a1, 17 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+
+
+	#L
+	li $a0, 5 #row
+	li $a1, 19 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+
+	li $a0, 6 #row
+	li $a1, 19 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+
+	li $a0, 7 #row
+	li $a1, 19 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+
+	li $a0, 8 #row
+	li $a1, 19 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 8 #row
+	li $a1, 20 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+	
+	li $a0, 8 #row
+	li $a1, 21 #col
+	lw $a2, messageColour #colour
+	jal drawPixel
+
+	lw $ra, 0($sp)
+    	addi $sp, $sp, 4
 	j return
 	
 	
