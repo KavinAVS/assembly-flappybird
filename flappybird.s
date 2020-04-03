@@ -30,9 +30,6 @@
 	# ===== GAME LOOP =====
 	gameLoop:
 	
-	j endGame
-	
-	
 	li $v0, 32 #sleep call
     	li $a0, 50 #sleep for 17 milliseconds
     	syscall
@@ -80,7 +77,7 @@
 	Pressed: #if f key is pressed moves the bird up 1 and sets gravity to 0
 	lw $t0, birdRow
 	li $t1, 0
-	subi $t0, $t0, 3
+	subi $t0, $t0, 4
 	sw $t1, gravity
 	sw $t0, birdRow
 	j afterKey
@@ -89,7 +86,8 @@
 	lw $t0, birdRow
 	lw $t1, gravity
 	addi $t1, $t1, 1
-	add $t0, $t0, $t1
+	srl $t2, $t1, 1
+	add $t0, $t0, $t2
 	sw $t1, gravity
 	sw $t0, birdRow
 	
@@ -108,23 +106,23 @@
 	lw $t4, pipeColour
 	
 	lw $t5, 4($a0)
-	beq $t4, $t5, Exit
+	beq $t4, $t5, endGame
 	lw $t5, 8($a0)
-	beq $t4, $t5, Exit
+	beq $t4, $t5, endGame
 	
 	lw $t5, 132($a0)
-	beq $t4, $t5, Exit
+	beq $t4, $t5, endGame
 	lw $t5, 136($a0)
-	beq $t4, $t5, Exit
+	beq $t4, $t5, endGame
 	lw $t5, 140($a0)
-	beq $t4, $t5, Exit
+	beq $t4, $t5, endGame
 	
 	lw $t5, 256($a0)
-	beq $t4, $t5, Exit
+	beq $t4, $t5, endGame
 	lw $t5, 260($a0)
-	beq $t4, $t5, Exit
+	beq $t4, $t5, endGame
 	lw $t5, 264($a0)
-	beq $t4, $t5, Exit
+	beq $t4, $t5, endGame
 	
     	sw $t1 4($a0) 
         sw $t3 8($a0)
@@ -136,11 +134,6 @@
         sw $t1 256($a0) 
         sw $t1 260($a0)
         sw $t1 264($a0)
-        
-        
-        
-        
-        
 	
 	j return
 	
