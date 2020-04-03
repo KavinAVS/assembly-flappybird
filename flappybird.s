@@ -12,6 +12,12 @@
     	pipeWidth: .word 1
     	pipeHeight: .word 15
     	
+    	birdRow: .word 5
+    	birdCol: .word 1
+    	
+    	fKey: .word 102
+
+    	
 .text
 
 	# ===== GAME LOOP =====
@@ -25,8 +31,8 @@
 	
 	jal updatePipe
 	
-	li $a0, 16
-	li $a1, 32
+	lw $a0, birdRow
+	lw $a1, birdCol
 	jal drawBird
 	
 	j gameLoop
@@ -51,8 +57,29 @@
 	# $a1: col (top left)
 	
 	drawBird:
-	lw $t0,displayAdStart
 	
+	#Deals with f key
+	lw $t1, 0xffff0000 #key event
+	lw $t2, 0xffff0004 #key pressed
+	lw $t3, fKey
+	beqz $t1, notPressed #no key pressed
+	bne $t2, $t3, notPressed #f key not pressed
+	
+	
+	
+	Pressed: #if f key is pressed moves the bird up 1
+	lw $t0, birdRow
+	subi $t0, $t0, 1
+	sw $t0, birdRow
+	j afterKey
+	
+	notPressed: #if f key is not pressed move the bird down 1
+	lw $t0, birdRow
+	addi $t0, $t0, 1
+	sw $t0, birdRow
+	
+	afterKey:
+	lw $t0,displayAdStart
 	sll $a0, $a0, 7
 	sll $a1, $a1, 2
 	
@@ -73,6 +100,11 @@
         sw $t1 256($a0) 
         sw $t1 260($a0)
         sw $t1 264($a0)
+        
+        
+        
+        
+        
 	
 	j return
 	
