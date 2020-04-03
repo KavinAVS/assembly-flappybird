@@ -25,15 +25,16 @@
 
     	
 .text
-
+	
+	li $v0, 32 #sleep call
+    	li $a0, 2000 #sleep for 17 milliseconds
+    	syscall
+	
 	# ===== GAME LOOP =====
 	gameLoop:
 	
-	j endGame
-	
-	
 	li $v0, 32 #sleep call
-    	li $a0, 200 #sleep for 17 milliseconds
+    	li $a0, 50 #sleep for 17 milliseconds
     	syscall
 	
 	jal drawSky
@@ -79,7 +80,7 @@
 	Pressed: #if f key is pressed moves the bird up 1 and sets gravity to 0
 	lw $t0, birdRow
 	li $t1, 0
-	subi $t0, $t0, 3
+	subi $t0, $t0, 4
 	sw $t1, gravity
 	sw $t0, birdRow
 	j afterKey
@@ -88,7 +89,8 @@
 	lw $t0, birdRow
 	lw $t1, gravity
 	addi $t1, $t1, 1
-	add $t0, $t0, $t1
+	srl $t2, $t1, 1
+	add $t0, $t0, $t2
 	sw $t1, gravity
 	sw $t0, birdRow
 	
@@ -104,7 +106,27 @@
 	lw $t1, birdbody
     	lw $t2, birdbeak
     	lw $t3, birdeyes
-
+	lw $t4, pipeColour
+	
+	lw $t5, 4($a0)
+	beq $t4, $t5, endGame
+	lw $t5, 8($a0)
+	beq $t4, $t5, endGame
+	
+	lw $t5, 132($a0)
+	beq $t4, $t5, endGame
+	lw $t5, 136($a0)
+	beq $t4, $t5, endGame
+	lw $t5, 140($a0)
+	beq $t4, $t5, endGame
+	
+	lw $t5, 256($a0)
+	beq $t4, $t5, endGame
+	lw $t5, 260($a0)
+	beq $t4, $t5, endGame
+	lw $t5, 264($a0)
+	beq $t4, $t5, endGame
+	
     	sw $t1 4($a0) 
         sw $t3 8($a0)
 
@@ -115,11 +137,6 @@
         sw $t1 256($a0) 
         sw $t1 260($a0)
         sw $t1 264($a0)
-        
-        
-        
-        
-        
 	
 	j return
 	
@@ -178,8 +195,8 @@
 	# ===== UPDATE PIPE =====
 	updatePipe:
 	lw $a0, pipePos
-	li $a1, 15
-	li $a2, 10 
+	lw $a1, pipeHeight
+	li $a2, 9 
 	lw $a3, pipeWidth
 	
 	addi $sp, $sp, -4
@@ -206,6 +223,14 @@
 	startnewpipe: # If pipe WIDTH = 1 AND POS = 0
 	li $t0, 31
 	sw $t0, pipePos
+	
+	li $v0, 42
+	li $a1, 21 
+	syscall
+	
+	addi $a0, $a0, 1
+	sw $a0, pipeHeight
+	
 	j return
 	
 	changepipewidth2: 
