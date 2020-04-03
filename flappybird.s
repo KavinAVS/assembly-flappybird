@@ -96,6 +96,11 @@
 	
 	
 	afterKey:
+	#ends game if bird leaves screen
+	li $t0, 33
+	bge $a0, $t0, endGame
+	bltz $a0, endGame
+	
 	lw $t0,displayAdStart
 	sll $a0, $a0, 7
 	sll $a1, $a1, 2
