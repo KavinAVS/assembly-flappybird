@@ -18,7 +18,7 @@
 	gameLoop:
 	
 	li $v0, 32 #sleep call
-    	li $a0, 500 #sleep for 17 milliseconds
+    	li $a0, 100 #sleep for 17 milliseconds
     	syscall
 	
 	jal drawSky
@@ -26,7 +26,7 @@
 	jal updatePipe
 	
 	li $a0, 16
-	li $a1, 32
+	li $a1, 0
 	jal drawBird
 	
 	j gameLoop
@@ -131,8 +131,8 @@
 	# ===== UPDATE PIPE =====
 	updatePipe:
 	lw $a0, pipePos
-	li $a1, 15
-	li $a2, 10 
+	lw $a1, pipeHeight
+	li $a2, 7 
 	lw $a3, pipeWidth
 	
 	addi $sp, $sp, -4
@@ -159,6 +159,13 @@
 	startnewpipe: # If pipe WIDTH = 1 AND POS = 0
 	li $t0, 31
 	sw $t0, pipePos
+	
+	li $v0, 42
+	li $a1, 23 
+	syscall
+	addi $a0, $a0, 1
+	sw $a0, pipeHeight
+	
 	j return
 	
 	changepipewidth2: 
