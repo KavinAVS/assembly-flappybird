@@ -1,15 +1,45 @@
+#####################################################################
+#
+# CSC258H5S Winter 2020 Assembly Programming Project
+# University of Toronto Mississauga
+#
+# Group members:
+# - Student 1: Kavin Adithiya Vinayagapuram Shivakumar, 1005595492
+# - Student 2 (if any): Name, Student Number
+#
+# Bitmap Display Configuration:
+# - Unit width in pixels: 8					     
+# - Unit height in pixels: 8
+# - Display width in pixels: 256
+# - Display height in pixels: 256
+# - Base Address for Display: 0x10008000 ($gp)
+#
+# Which milestone is reached in this submission?
+# (See the assignment handout for descriptions of the milestones)
+# - Milestone 5
+#
+# Which approved additional features have been implemented?
+# (See the assignment handout for the list of additional features)
+# 1. Realistic physics
+# 2. Changing sky colour
+# 3. (fill in the feature, if any)
+# 4.
+#
+# Any additional information that the TA needs to know:
+# - (write here, if any)
+#
+#####################################################################
 .data
-	skyColour: .word 0x8c113a
-	birdColour: .word 0x8c1111
-	pipeColour: .word 0x3b120d
+
+	pipeColour: .word 0x7F3F3F
 	displayAdStart: .word 0x10008000
 	
 	birdbody: .word 0x46057a 
     	birdbeak: .word 0xff9900 
     	birdeyes: .word 0xffffff
     	
-    	white: .word 0xffffff
-    	black: .word 0x000000
+    	skyColours: .word 0x3b4551, 0x3b4551, 0x444b7a, 0x8a93cc, 0xc49fb7, 0xf2a080, 0xffd9a0, 0xffe8aa, 0xffe8aa, 0xffd9a0, 0xf2a080, 0xc49fb7, 0x8a93cc, 0x444b7a
+    	skyColourNum: .word 0
     	
     	pipePos: .word 31
     	pipeWidth: .word 1
@@ -31,13 +61,14 @@
     	syscall
 	
 	# ===== GAME LOOP =====
-	gameLoop:
+gameLoop:
 	
 	li $v0, 32 #sleep call
     	li $a0, 50 #sleep for 17 milliseconds
     	syscall
 	
 	jal drawSky
+	jal drawBackground
 	
 	jal updatePipe
 	
@@ -49,9 +80,25 @@
 	
 	# =====  SKY BUILDING =====
 	# No arguments
-	drawSky:
+drawSky:
 	lw $t0,displayAdStart
-	lw $t1,skyColour
+	lw $t2, skyColourNum
+	srl $t3, $t2, 3
+	beq $t3, 15, resetSkyNum
+	addi $t2, $t2, 1
+	j makeSky
+	
+	resetSkyNum:
+	li $t3, 0
+	li $t2, 0
+	
+	makeSky:
+	sw $t2, skyColourNum
+	sll $t3, $t3, 2
+	la $t2, skyColours 
+	add $t2, $t2, $t3 #choose the right sky colour
+	
+	lw $t1, 0($t2)
 	li $t2, 0
 	li $t3, 1024
 	
@@ -66,7 +113,7 @@
 	# $a0: row (top left)
 	# $a1: col (top left)
 	
-	drawBird:
+drawBird:
 	
 	#Deals with f key
 	lw $t1, 0xffff0000 #key event
@@ -150,7 +197,7 @@
 	# $a1: end of the top pipe (row) 0 to 31
 	# $a2: the gap size (not larger than 30) 
 	# $a3: pipe width 1 to 4
-	drawPipe:
+drawPipe:
 	lw $t0,displayAdStart
 	lw $t3,pipeColour
 	
@@ -198,7 +245,7 @@
 	j return
 	
 	# ===== UPDATE PIPE =====
-	updatePipe:
+updatePipe:
 	lw $a0, pipePos
 	lw $a1, pipeHeight
 	li $a2, 9 
@@ -252,9 +299,46 @@
 	sw $t0, pipePos
 	j return
 	
-	# ===== RETURN =====
-	return:
-	jr $ra	
+	# ===== DRAW PIXEL =====
+	# $a0: row
+	# $a1: col
+	# $a2: colour
+	drawPixel:
+	lw $t0, displayAdStart
+	sll $t1, $a0, 7
+	sll $t2, $a1, 2
+	move $t3, $a2
+	
+	add $t0, $t0, $t1
+	add $t0, $t0, $t2
+	sw $t3 0($t0)
+	
+	j return
+
+	# ===== BACKGROUND BUILDING =====
+drawBackground:
+	
+	addi $sp, $sp, -4
+	sw $ra, 0($sp)
+	
+	li $a0, 0
+	li $a1, 0
+	lw $a2, pipeColour
+	jal drawPixel
+	
+	li $a0, 1
+	li $a1, 2
+	lw $a2, pipeColour
+	jal drawPixel
+	
+	
+	
+	lw $ra, 0($sp)
+	addi $sp, $sp, 4
+	
+	j return
+		
+
 	
 endGame:
 	lw $t0, displayAdStart
@@ -390,7 +474,11 @@ endGame:
    
       
         j Exit
-																						
+        
+	# ===== RETURN =====
+return:
+	jr $ra	
+																							
 Exit:
 	li $v0, 10 # terminate the program gracefully
 	syscall
