@@ -14,6 +14,7 @@
     	
     	birdRow: .word 5
     	birdCol: .word 1
+    	gravity: .word 0
     	
     	fKey: .word 102
 
@@ -24,7 +25,7 @@
 	gameLoop:
 	
 	li $v0, 32 #sleep call
-    	li $a0, 500 #sleep for 17 milliseconds
+    	li $a0, 200 #sleep for 17 milliseconds
     	syscall
 	
 	jal drawSky
@@ -67,16 +68,22 @@
 	
 	
 	
-	Pressed: #if f key is pressed moves the bird up 1
+	Pressed: #if f key is pressed moves the bird up 1 and sets gravity to 0
 	lw $t0, birdRow
-	subi $t0, $t0, 1
+	li $t1, 0
+	subi $t0, $t0, 3
+	sw $t1, gravity
 	sw $t0, birdRow
 	j afterKey
 	
-	notPressed: #if f key is not pressed move the bird down 1
+	notPressed: #if f key is not pressed increments gravity by 2 and moves the bird down gravity rows
 	lw $t0, birdRow
-	addi $t0, $t0, 1
+	lw $t1, gravity
+	addi $t1, $t1, 1
+	add $t0, $t0, $t1
+	sw $t1, gravity
 	sw $t0, birdRow
+	
 	
 	afterKey:
 	lw $t0,displayAdStart
