@@ -25,8 +25,6 @@
 # 3. Dynamic messages after each pipe
 # 4.
 #
-# Any additional information that the TA needs to know:
-# - (write here, if any)
 #
 #####################################################################
 .data
